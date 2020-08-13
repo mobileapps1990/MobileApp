@@ -9,6 +9,7 @@
 import UIKit
 
 let movieURL = "https://v2s3z9v2.stackpathcdn.com/videos/2591/04-02-2019/utube_chicken_kurma__GLR6SCPE.mp4"
+let movieURL1 = "https://v2s3z9v2.stackpathcdn.com/videos/2591/21-08-2018/utube_nalli_nihari__7IN3TW4K.mp4"
 
 
 class ListViewController: UIViewController {
@@ -17,7 +18,11 @@ class ListViewController: UIViewController {
     let myDownloadPath = VtnDownloadUtilityV2.baseFilePath + "/My Downloads"
     @IBOutlet weak var downloadBtn: UIButton!
     var downloadedFilesArray : [String] = []
+    var userID : String = "5577"
+    var videoID1 : String = "173"
+    var videoID2 : String = "327"
 
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.setUpDownloadingViewController()
@@ -68,8 +73,16 @@ class ListViewController: UIViewController {
         let fileURL  : NSString = movieURL as NSString
         var fileName : NSString = fileURL.lastPathComponent as NSString
         fileName = VtnDownloadUtilityV2.getUniqueFileNameWithPath((myDownloadPath as NSString).appendingPathComponent(fileName as String) as NSString)
-        mDownloadingViewObj?.downloadManager.addDownloadTask(fileName as String, fileURL: fileURL as String, destinationPath: myDownloadPath)
+        mDownloadingViewObj?.downloadManager.addDownloadTask(fileName as String, fileURL: fileURL as String, destinationPath: myDownloadPath,userID:userID as String,videoID:videoID1 as String)
     }
+    
+    @IBAction func secondDownload(_ sender: UIButton) {
+         self.downloadBtn.alpha = 0.5
+         let fileURL  : NSString = movieURL1 as NSString
+         var fileName : NSString = fileURL.lastPathComponent as NSString
+         fileName = VtnDownloadUtilityV2.getUniqueFileNameWithPath((myDownloadPath as NSString).appendingPathComponent(fileName as String) as NSString)
+         mDownloadingViewObj?.downloadManager.addDownloadTask(fileName as String, fileURL: fileURL as String, destinationPath: myDownloadPath,userID:userID as String,videoID:videoID2 as String)
+     }
     
     @objc func downloadFinishedNotification(_ notification : Notification) {
          let fileName : NSString = notification.object as! NSString

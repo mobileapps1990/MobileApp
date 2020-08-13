@@ -56,6 +56,8 @@ open class VtnDownloadManagerV2: NSObject {
     
     open var downloadingArray: [VtnDownloadModelV2] = []
     
+//    open var downloadingArray1: [String:VtnDownloadModelV2] = [String:VtnDownloadModelV2]()
+    
     public convenience init(session sessionIdentifer: String, delegate: VtnDownloadManagerDelegateV2, sessionConfiguration: URLSessionConfiguration? = nil, completion: (() -> Void)? = nil) {
         self.init()
         self.delegate = delegate
@@ -105,9 +107,9 @@ extension VtnDownloadManagerV2 {
             let fileURL = taskDescComponents[TaskDescFileURLIndex]
             let destinationPath = taskDescComponents[TaskDescFileDestinationIndex]
             
-            let downloadModel = VtnDownloadModelV2.init(fileName: fileName, fileURL: fileURL, destinationPath: destinationPath)
+            let downloadModel = VtnDownloadModelV2.init(fileName: fileName, fileURL: fileURL, destinationPath: destinationPath, userID:"",videoID:"")
             downloadModel.task = downloadTask
-            downloadModel.startTime = Date()
+            //  downloadModel.startTime = Date()
             
             if downloadTask.state == .running {
                 downloadModel.status = VtnTaskStatusV2.downloading.description()
@@ -142,32 +144,32 @@ extension VtnDownloadManagerV2: URLSessionDownloadDelegate {
                     let totalBytesCount = Double(downloadTask.countOfBytesExpectedToReceive)
                     let progress = Float(receivedBytesCount / totalBytesCount)
                     
-                    let taskStartedDate = downloadModel.startTime ?? Date()
-                    let timeInterval = taskStartedDate.timeIntervalSinceNow
-                    let downloadTime = TimeInterval(-1 * timeInterval)
+//                    let taskStartedDate = downloadModel.startTime ?? Date()
+//                    let timeInterval = taskStartedDate.timeIntervalSinceNow
+//                    let downloadTime = TimeInterval(-1 * timeInterval)
+//
+//                    let speed = Float(totalBytesWritten) / Float(downloadTime)
+//
+//                    let remainingContentLength = totalBytesExpectedToWrite - totalBytesWritten
+//
+//                    let remainingTime = remainingContentLength / Int64(speed)
+//                    let hours = Int(remainingTime) / 3600
+//                    let minutes = (Int(remainingTime) - hours * 3600) / 60
+//                    let seconds = Int(remainingTime) - hours * 3600 - minutes * 60
+//
+//                    let totalFileSize = VtnDownloadUtilityV2.calculateFileSizeInUnit(totalBytesExpectedToWrite)
+//                    let totalFileSizeUnit = VtnDownloadUtilityV2.calculateUnit(totalBytesExpectedToWrite)
+//
+//                    let downloadedFileSize = VtnDownloadUtilityV2.calculateFileSizeInUnit(totalBytesWritten)
+//                    let downloadedSizeUnit = VtnDownloadUtilityV2.calculateUnit(totalBytesWritten)
+//
+//                    let speedSize = VtnDownloadUtilityV2.calculateFileSizeInUnit(Int64(speed))
+//                    let speedUnit = VtnDownloadUtilityV2.calculateUnit(Int64(speed))
                     
-                    let speed = Float(totalBytesWritten) / Float(downloadTime)
-                    
-                    let remainingContentLength = totalBytesExpectedToWrite - totalBytesWritten
-                    
-                    let remainingTime = remainingContentLength / Int64(speed)
-                    let hours = Int(remainingTime) / 3600
-                    let minutes = (Int(remainingTime) - hours * 3600) / 60
-                    let seconds = Int(remainingTime) - hours * 3600 - minutes * 60
-                    
-                    let totalFileSize = VtnDownloadUtilityV2.calculateFileSizeInUnit(totalBytesExpectedToWrite)
-                    let totalFileSizeUnit = VtnDownloadUtilityV2.calculateUnit(totalBytesExpectedToWrite)
-                    
-                    let downloadedFileSize = VtnDownloadUtilityV2.calculateFileSizeInUnit(totalBytesWritten)
-                    let downloadedSizeUnit = VtnDownloadUtilityV2.calculateUnit(totalBytesWritten)
-                    
-                    let speedSize = VtnDownloadUtilityV2.calculateFileSizeInUnit(Int64(speed))
-                    let speedUnit = VtnDownloadUtilityV2.calculateUnit(Int64(speed))
-                    
-                    downloadModel.remainingTime = (hours, minutes, seconds)
-                    downloadModel.file = (totalFileSize, totalFileSizeUnit as String)
-                    downloadModel.downloadedFile = (downloadedFileSize, downloadedSizeUnit as String)
-                    downloadModel.speed = (speedSize, speedUnit as String)
+//                    downloadModel.remainingTime = (hours, minutes, seconds)
+//                    downloadModel.file = (totalFileSize, totalFileSizeUnit as String)
+//                    downloadModel.downloadedFile = (downloadedFileSize, downloadedSizeUnit as String)
+//                    downloadModel.speed = (speedSize, speedUnit as String)
                     downloadModel.progress = progress
                     
                     if self.downloadingArray.contains(downloadModel), let objectIndex = self.downloadingArray.firstIndex(of: downloadModel) {
@@ -238,7 +240,7 @@ extension VtnDownloadManagerV2: URLSessionDownloadDelegate {
                 let fileURL = taskDescComponents[self.TaskDescFileURLIndex]
                 let destinationPath = taskDescComponents[self.TaskDescFileDestinationIndex]
                 
-                let downloadModel = VtnDownloadModelV2.init(fileName: fileName, fileURL: fileURL, destinationPath: destinationPath)
+                let downloadModel = VtnDownloadModelV2.init(fileName: fileName, fileURL: fileURL, destinationPath: destinationPath,userID:"",videoID:"")
                 downloadModel.status = VtnTaskStatusV2.failed.description()
                 downloadModel.task = downloadTask
                 
@@ -315,7 +317,7 @@ extension VtnDownloadManagerV2: URLSessionDownloadDelegate {
 
 extension VtnDownloadManagerV2 {
     
-    @objc public func addDownloadTask(_ fileName: String, request: URLRequest, destinationPath: String) {
+    @objc public func addDownloadTask(_ fileName: String, request: URLRequest, destinationPath: String, userID:String,videoID:String) {
         
         let url = request.url!
         let fileURL = url.absoluteString
@@ -326,8 +328,7 @@ extension VtnDownloadManagerV2 {
         
         debugPrint("session manager:\(String(describing: sessionManager)) url:\(String(describing: url)) request:\(String(describing: request))")
         
-        let downloadModel = VtnDownloadModelV2.init(fileName: fileName, fileURL: fileURL, destinationPath: destinationPath)
-        downloadModel.startTime = Date()
+        let downloadModel = VtnDownloadModelV2.init(fileName: fileName, fileURL: fileURL, destinationPath: destinationPath,userID: userID,videoID:videoID)
         downloadModel.status = VtnTaskStatusV2.downloading.description()
         downloadModel.task = downloadTask
         
@@ -335,20 +336,20 @@ extension VtnDownloadManagerV2 {
         delegate?.downloadRequestStarted?(downloadModel, index: downloadingArray.count - 1)
     }
     
-    @objc public func addDownloadTask(_ fileName: String, fileURL: String, destinationPath: String) {
+    @objc public func addDownloadTask(_ fileName: String, fileURL: String, destinationPath: String,userID:String,videoID:String) {
         
         let url = URL(string: fileURL)!
         let request = URLRequest(url: url)
-        addDownloadTask(fileName, request: request, destinationPath: destinationPath)
+        addDownloadTask(fileName, request: request, destinationPath: destinationPath,userID: userID,videoID: videoID)
         
     }
     
-    @objc public func addDownloadTask(_ fileName: String, fileURL: String) {
-        addDownloadTask(fileName, fileURL: fileURL, destinationPath: "")
+    @objc public func addDownloadTask(_ fileName: String, fileURL: String,userID:String,videoID:String) {
+        addDownloadTask(fileName, fileURL: fileURL, destinationPath: "",userID: userID,videoID: videoID)
     }
     
-    @objc public func addDownloadTask(_ fileName: String, request: URLRequest) {
-        addDownloadTask(fileName, request: request, destinationPath: "")
+    @objc public func addDownloadTask(_ fileName: String, request: URLRequest,userID:String,videoID:String) {
+        addDownloadTask(fileName, request: request, destinationPath: "",userID: userID,videoID: videoID)
     }
     
     @objc public func pauseDownloadTaskAtIndex(_ index: Int) {
@@ -362,8 +363,6 @@ extension VtnDownloadManagerV2 {
         let downloadTask = downloadModel.task
         downloadTask!.suspend()
         downloadModel.status = VtnTaskStatusV2.paused.description()
-        downloadModel.startTime = Date()
-        
         downloadingArray[index] = downloadModel
         
         delegate?.downloadRequestDidPaused?(downloadModel, index: index)
@@ -397,7 +396,6 @@ extension VtnDownloadManagerV2 {
         
         downloadTask!.resume()
         downloadModel.status = VtnTaskStatusV2.downloading.description()
-        downloadModel.startTime = Date()
         downloadModel.task = downloadTask
         
         downloadingArray[index] = downloadModel
@@ -410,16 +408,7 @@ extension VtnDownloadManagerV2 {
     }
     
     @objc public func presentNotificationForDownload(_ notifAction: String, notifBody: String) {
-        let application = UIApplication.shared
-        let applicationState = application.applicationState
         
-        if applicationState == UIApplication.State.background {
-            let localNotification = UILocalNotification()
-            localNotification.alertBody = notifBody
-            localNotification.alertAction = notifAction
-            localNotification.soundName = UILocalNotificationDefaultSoundName
-            localNotification.applicationIconBadgeNumber += 1
-            application.presentLocalNotificationNow(localNotification)
-        }
+ 
     }
 }

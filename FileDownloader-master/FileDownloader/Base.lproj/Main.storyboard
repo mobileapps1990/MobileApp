@@ -47,14 +47,29 @@
                                     <action selector="deleteDownload:" destination="rbM-Hp-38G" eventType="touchUpInside" id="Zf1-Rr-I4F"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rzs-Sd-fhK">
+                                <rect key="frame" x="148" y="136" width="137" height="30"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="30" id="3kh-ed-r9M"/>
+                                    <constraint firstAttribute="width" constant="137" id="4Wi-D9-YnA"/>
+                                </constraints>
+                                <state key="normal" title="Second Video">
+                                    <color key="titleColor" red="1" green="0.14913141730000001" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                </state>
+                                <connections>
+                                    <action selector="secondDownload:" destination="rbM-Hp-38G" eventType="touchUpInside" id="9Zr-Dy-h0F"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <constraints>
                             <constraint firstItem="z9H-z0-zxJ" firstAttribute="top" secondItem="8Hm-uN-2RU" secondAttribute="top" constant="28" id="5ZB-RV-S0w"/>
+                            <constraint firstItem="rzs-Sd-fhK" firstAttribute="top" secondItem="z9H-z0-zxJ" secondAttribute="bottom" constant="28" id="PM7-ii-YgC"/>
                             <constraint firstItem="fMX-fa-kJr" firstAttribute="top" secondItem="8Hm-uN-2RU" secondAttribute="top" constant="28" id="TB0-g8-VDz"/>
                             <constraint firstItem="fMX-fa-kJr" firstAttribute="leading" secondItem="8Hm-uN-2RU" secondAttribute="leading" constant="20" id="YzF-Bq-QFQ"/>
                             <constraint firstItem="8Hm-uN-2RU" firstAttribute="trailing" secondItem="GGh-Mc-AkX" secondAttribute="trailing" constant="20" id="aNK-Hc-6ut"/>
                             <constraint firstItem="8Hm-uN-2RU" firstAttribute="bottom" secondItem="GGh-Mc-AkX" secondAttribute="bottom" constant="515" id="gOw-T9-ltz"/>
+                            <constraint firstItem="rzs-Sd-fhK" firstAttribute="leading" secondItem="fMX-fa-kJr" secondAttribute="trailing" constant="38" id="ihu-Sl-NgY"/>
                             <constraint firstItem="z9H-z0-zxJ" firstAttribute="leading" secondItem="fMX-fa-kJr" secondAttribute="trailing" constant="48" id="pct-iM-Img"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="8Hm-uN-2RU"/>
