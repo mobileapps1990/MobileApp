@@ -22,7 +22,22 @@ class ListViewController: UIViewController {
         super.viewDidLoad()
         self.setUpDownloadingViewController()
         
-     
+         do {
+             let contentOfDir: [String] = try FileManager.default.contentsOfDirectory(atPath: VtnUtility.baseFilePath as String)
+             downloadedFilesArray.append(contentsOf: contentOfDir)
+             let index = downloadedFilesArray.firstIndex(of: ".DS_Store")
+             if let index = index {
+                 downloadedFilesArray.remove(at: index)
+             }
+             if downloadedFilesArray.count > 0 {
+                 self.downloadBtn.isEnabled = false
+                 self.downloadBtn.alpha = 0.5
+             }
+             print(downloadedFilesArray)
+         } catch let error as NSError {
+             print("Error while getting directory content \(error)")
+         }
+        
          NotificationCenter.default.addObserver(self, selector: #selector(downloadFinishedNotification(_:)), name: NSNotification.Name(rawValue: VtnUtility.DownloadCompletedNotif as String), object: nil)
         // Do any additional setup after loading the view.
     }
@@ -44,7 +59,7 @@ class ListViewController: UIViewController {
     @IBAction func deleteDownload(_ sender: UIButton) {
         self.removeExistingFiles()
         self.downloadBtn.isEnabled = true
-        self.downloadBtn.alpha = 0.1
+        self.downloadBtn.alpha = 1
     }
     
     
@@ -68,21 +83,7 @@ class ListViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        do {
-            let contentOfDir: [String] = try FileManager.default.contentsOfDirectory(atPath: VtnUtility.baseFilePath as String)
-            downloadedFilesArray.append(contentsOf: contentOfDir)
-            let index = downloadedFilesArray.firstIndex(of: ".DS_Store")
-            if let index = index {
-                downloadedFilesArray.remove(at: index)
-            }
-            if downloadedFilesArray.count > 0 {
-                self.downloadBtn.isEnabled = false
-                self.downloadBtn.alpha = 0.5
-            }
-            print(downloadedFilesArray)
-        } catch let error as NSError {
-            print("Error while getting directory content \(error)")
-        }
+        
         
     }
     

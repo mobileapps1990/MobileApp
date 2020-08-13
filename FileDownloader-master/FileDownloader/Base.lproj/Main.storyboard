@@ -33,9 +33,12 @@
                                     <action selector="startDownload:" destination="rbM-Hp-38G" eventType="touchUpInside" id="9pM-J1-YP9"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="GGh-Mc-AkX">
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="GGh-Mc-AkX">
                                 <rect key="frame" x="316" y="136" width="78" height="36"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="36" id="5ak-Me-tCD"/>
+                                    <constraint firstAttribute="width" constant="78" id="vHA-K9-4do"/>
+                                </constraints>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="20"/>
                                 <state key="normal" title="Delete">
                                     <color key="titleColor" red="1" green="0.14913141730000001" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -50,6 +53,8 @@
                             <constraint firstItem="z9H-z0-zxJ" firstAttribute="top" secondItem="8Hm-uN-2RU" secondAttribute="top" constant="28" id="5ZB-RV-S0w"/>
                             <constraint firstItem="fMX-fa-kJr" firstAttribute="top" secondItem="8Hm-uN-2RU" secondAttribute="top" constant="28" id="TB0-g8-VDz"/>
                             <constraint firstItem="fMX-fa-kJr" firstAttribute="leading" secondItem="8Hm-uN-2RU" secondAttribute="leading" constant="20" id="YzF-Bq-QFQ"/>
+                            <constraint firstItem="8Hm-uN-2RU" firstAttribute="trailing" secondItem="GGh-Mc-AkX" secondAttribute="trailing" constant="20" id="aNK-Hc-6ut"/>
+                            <constraint firstItem="8Hm-uN-2RU" firstAttribute="bottom" secondItem="GGh-Mc-AkX" secondAttribute="bottom" constant="515" id="gOw-T9-ltz"/>
                             <constraint firstItem="z9H-z0-zxJ" firstAttribute="leading" secondItem="fMX-fa-kJr" secondAttribute="trailing" constant="48" id="pct-iM-Img"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="8Hm-uN-2RU"/>
@@ -117,7 +122,7 @@
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" lineBreakMode="tailTruncation" numberOfLines="5" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pZd-uM-dW6" userLabel="Detail label">
-                                                    <rect key="frame" x="131.66666666666666" y="26" width="257.33333333333337" height="46"/>
+                                                    <rect key="frame" x="131.66666666666666" y="26" width="257.33333333333337" height="75.666666666666671"/>
                                                     <string key="text">File Size: Calculating...
 Downloaded: Calculating...</string>
                                                     <fontDescription key="fontDescription" type="system" pointSize="13"/>
@@ -151,7 +156,7 @@ Downloaded: Calculating...</string>
                                                 <constraint firstItem="pZd-uM-dW6" firstAttribute="top" secondItem="bks-H5-XdK" secondAttribute="bottom" id="GRY-04-pjy"/>
                                                 <constraint firstItem="Gqd-hy-Qrk" firstAttribute="top" secondItem="cwY-gC-y0P" secondAttribute="bottom" constant="10" id="HIJ-HK-wKH"/>
                                                 <constraint firstItem="Gqd-hy-Qrk" firstAttribute="top" secondItem="Vgi-dE-XTg" secondAttribute="bottom" constant="8.6666666666666714" id="IV7-o6-8oJ"/>
-                                                <constraint firstItem="Gqd-hy-Qrk" firstAttribute="top" secondItem="pZd-uM-dW6" secondAttribute="bottom" constant="39.666666666666671" id="QjT-R0-v2h"/>
+                                                <constraint firstItem="Gqd-hy-Qrk" firstAttribute="top" secondItem="pZd-uM-dW6" secondAttribute="bottom" constant="10" id="QjT-R0-v2h"/>
                                                 <constraint firstAttribute="bottom" secondItem="Vgi-dE-XTg" secondAttribute="bottom" constant="17" id="WR4-6f-cwm"/>
                                                 <constraint firstItem="cwY-gC-y0P" firstAttribute="leading" secondItem="hat-zx-ucq" secondAttribute="leading" constant="20" id="YPH-hA-XCa"/>
                                                 <constraint firstItem="pZd-uM-dW6" firstAttribute="leading" secondItem="cwY-gC-y0P" secondAttribute="trailing" constant="20" id="ckD-fA-0id"/>
@@ -203,6 +208,7 @@ Downloaded: Calculating...</string>
                     <toolbarItems/>
                     <navigationItem key="navigationItem" id="Gov-2S-iJd"/>
                     <tabBar key="tabBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="H3T-OY-aVI">
+                        <rect key="frame" x="0.0" y="0.0" width="1000" height="1000"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     </tabBar>

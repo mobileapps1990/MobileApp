@@ -64,7 +64,7 @@ class VtnDownloadingcell: UITableViewCell {
         }
         
         let detailLabelText = NSMutableString()
-        detailLabelText.appendFormat("File Size: \(fileSize)\nDownloaded: \(downloadedFileSize) (%.2f%%)" as NSString, downloadModel.progress * 100.0)
+         detailLabelText.appendFormat("File Size: \(fileSize)\nDownloaded: \(downloadedFileSize) (%.2f%%)\nStatus: \(downloadModel.status)" as NSString, downloadModel.progress * 100.0)
         lblDetails?.text = detailLabelText as String
     }
 

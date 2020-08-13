@@ -74,7 +74,6 @@ open class VtnDownloadManager: NSObject {
         let session = Foundation.URLSession(configuration: sessionConfiguration, delegate: self, delegateQueue: nil)
         return session
     }
-    
 }
 
 // MARK: Private Helper functions
@@ -129,7 +128,6 @@ extension VtnDownloadManager {
         }
         
         return true
-        
     }
 }
 
