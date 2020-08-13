@@ -8,7 +8,7 @@
 
 import UIKit
 
-let movieURL = "https://www.learningcontainer.com/wp-content/uploads/2020/05/sample-mp4-file.mp4"
+let movieURL = "https://v2s3z9v2.stackpathcdn.com/videos/2591/04-02-2019/utube_chicken_kurma__GLR6SCPE.mp4"
 
 
 class ListViewController: UIViewController {
