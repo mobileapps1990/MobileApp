@@ -26,7 +26,7 @@ class VtnDownloadingcell: UITableViewCell {
         // Configure the view for the selected state
     }
     
-    func updateCellForRowAtIndexPath(_ indexPath : IndexPath, downloadModel: VtnDownloadModel) {
+    func updateCellForRowAtIndexPath(_ indexPath : IndexPath, downloadModel: VtnDownloadModelV2) {
         
         self.lblTitle?.text = "File Title: \(downloadModel.fileName!)"
         self.progressDownload?.progress = downloadModel.progress

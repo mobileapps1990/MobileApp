@@ -8,7 +8,7 @@
 
 import UIKit
 
-open class VtnUtility: NSObject {
+open class VtnDownloadUtilityV2: NSObject {
 
     @objc public static let DownloadCompletedNotif: String = {
            return "com.VtnDownloadManager.DownloadCompletedNotif"

@@ -14,7 +14,7 @@ let movieURL = "https://v2s3z9v2.stackpathcdn.com/videos/2591/04-02-2019/utube_c
 class ListViewController: UIViewController {
     
     var mDownloadingViewObj  : VtnDownloadingVC?
-    let myDownloadPath = VtnUtility.baseFilePath + "/My Downloads"
+    let myDownloadPath = VtnDownloadUtilityV2.baseFilePath + "/My Downloads"
     @IBOutlet weak var downloadBtn: UIButton!
     var downloadedFilesArray : [String] = []
 
@@ -23,7 +23,7 @@ class ListViewController: UIViewController {
         self.setUpDownloadingViewController()
         
          do {
-             let contentOfDir: [String] = try FileManager.default.contentsOfDirectory(atPath: VtnUtility.baseFilePath as String)
+             let contentOfDir: [String] = try FileManager.default.contentsOfDirectory(atPath: VtnDownloadUtilityV2.baseFilePath as String)
              downloadedFilesArray.append(contentsOf: contentOfDir)
              let index = downloadedFilesArray.firstIndex(of: ".DS_Store")
              if let index = index {
@@ -38,7 +38,7 @@ class ListViewController: UIViewController {
              print("Error while getting directory content \(error)")
          }
         
-         NotificationCenter.default.addObserver(self, selector: #selector(downloadFinishedNotification(_:)), name: NSNotification.Name(rawValue: VtnUtility.DownloadCompletedNotif as String), object: nil)
+         NotificationCenter.default.addObserver(self, selector: #selector(downloadFinishedNotification(_:)), name: NSNotification.Name(rawValue: VtnDownloadUtilityV2.DownloadCompletedNotif as String), object: nil)
         // Do any additional setup after loading the view.
     }
     
@@ -67,7 +67,7 @@ class ListViewController: UIViewController {
         self.downloadBtn.alpha = 0.5
         let fileURL  : NSString = movieURL as NSString
         var fileName : NSString = fileURL.lastPathComponent as NSString
-        fileName = VtnUtility.getUniqueFileNameWithPath((myDownloadPath as NSString).appendingPathComponent(fileName as String) as NSString)
+        fileName = VtnDownloadUtilityV2.getUniqueFileNameWithPath((myDownloadPath as NSString).appendingPathComponent(fileName as String) as NSString)
         mDownloadingViewObj?.downloadManager.addDownloadTask(fileName as String, fileURL: fileURL as String, destinationPath: myDownloadPath)
     }
     

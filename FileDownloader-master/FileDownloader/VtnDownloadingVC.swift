@@ -16,14 +16,14 @@ class VtnDownloadingVC: UIViewController {
     var selectedIndexPath : IndexPath!
     @IBOutlet weak var tableView: UITableView?
 
-    lazy var downloadManager: VtnDownloadManager = {
+    lazy var downloadManager: VtnDownloadManagerV2 = {
         [unowned self] in
         let sessionIdentifer: String = "com.iosDevelopment.VtnDownloadManager.BackgroundSession"
         
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
         var completion = appDelegate.backgroundSessionCompletionHandler
         
-        let downloadmanager = VtnDownloadManager(session: sessionIdentifer, delegate: self, completion: completion)
+        let downloadmanager = VtnDownloadManagerV2(session: sessionIdentifer, delegate: self, completion: completion)
         return downloadmanager
         }()
     
@@ -38,7 +38,7 @@ class VtnDownloadingVC: UIViewController {
         self.tableView?.reloadData()
     }
     
-    func refreshCellForIndex(_ downloadModel: VtnDownloadModel, index: Int) {
+    func refreshCellForIndex(_ downloadModel: VtnDownloadModelV2, index: Int) {
         let indexPath = IndexPath.init(row: index, section: 0)
         let cell = self.tableView?.cellForRow(at: indexPath)
         if let cell = cell {
@@ -92,11 +92,11 @@ extension VtnDownloadingVC {
     
     func showAppropriateActionController(_ requestStatus: String) {
         
-        if requestStatus == VtnTaskStatus.downloading.description() {
+        if requestStatus == VtnTaskStatusV2.downloading.description() {
             self.showAlertControllerForPause()
-        } else if requestStatus == VtnTaskStatus.failed.description() {
+        } else if requestStatus == VtnTaskStatusV2.failed.description() {
             self.showAlertControllerForRetry()
-        } else if requestStatus == VtnTaskStatus.paused.description() {
+        } else if requestStatus == VtnTaskStatusV2.paused.description() {
             self.showAlertControllerForStart()
         }
     }
@@ -173,30 +173,30 @@ extension VtnDownloadingVC {
     }
 }
 
-extension VtnDownloadingVC: VtnDownloadManagerDelegate {
+extension VtnDownloadingVC: VtnDownloadManagerDelegateV2 {
     
-    func downloadRequestStarted(_ downloadModel: VtnDownloadModel, index: Int) {
+    func downloadRequestStarted(_ downloadModel: VtnDownloadModelV2, index: Int) {
         let indexPath = IndexPath.init(row: index, section: 0)
         tableView?.insertRows(at: [indexPath], with: UITableView.RowAnimation.fade)
     }
     
-    func downloadRequestDidPopulatedInterruptedTasks(_ downloadModels: [VtnDownloadModel]) {
+    func downloadRequestDidPopulatedInterruptedTasks(_ downloadModels: [VtnDownloadModelV2]) {
         tableView?.reloadData()
     }
     
-    func downloadRequestDidUpdateProgress(_ downloadModel: VtnDownloadModel, index: Int) {
+    func downloadRequestDidUpdateProgress(_ downloadModel: VtnDownloadModelV2, index: Int) {
         self.refreshCellForIndex(downloadModel, index: index)
     }
     
-    func downloadRequestDidPaused(_ downloadModel: VtnDownloadModel, index: Int) {
+    func downloadRequestDidPaused(_ downloadModel: VtnDownloadModelV2, index: Int) {
         self.refreshCellForIndex(downloadModel, index: index)
     }
     
-    func downloadRequestDidResumed(_ downloadModel: VtnDownloadModel, index: Int) {
+    func downloadRequestDidResumed(_ downloadModel: VtnDownloadModelV2, index: Int) {
         self.refreshCellForIndex(downloadModel, index: index)
     }
     
-    func downloadRequestCanceled(_ downloadModel: VtnDownloadModel, index: Int) {
+    func downloadRequestCanceled(_ downloadModel: VtnDownloadModelV2, index: Int) {
         
         self.safelyDismissAlertController()
         
@@ -204,7 +204,7 @@ extension VtnDownloadingVC: VtnDownloadManagerDelegate {
         tableView?.deleteRows(at: [indexPath], with: UITableView.RowAnimation.left)
     }
     
-    func downloadRequestFinished(_ downloadModel: VtnDownloadModel, index: Int) {
+    func downloadRequestFinished(_ downloadModel: VtnDownloadModelV2, index: Int) {
         
         self.safelyDismissAlertController()
         
@@ -213,11 +213,11 @@ extension VtnDownloadingVC: VtnDownloadManagerDelegate {
         let indexPath = IndexPath.init(row: index, section: 0)
         tableView?.deleteRows(at: [indexPath], with: UITableView.RowAnimation.left)
         
-        let docDirectoryPath : NSString = (VtnUtility.baseFilePath as NSString).appendingPathComponent(downloadModel.fileName) as NSString
-        NotificationCenter.default.post(name: NSNotification.Name(rawValue: VtnUtility.DownloadCompletedNotif as String), object: docDirectoryPath)
+        let docDirectoryPath : NSString = (VtnDownloadUtilityV2.baseFilePath as NSString).appendingPathComponent(downloadModel.fileName) as NSString
+        NotificationCenter.default.post(name: NSNotification.Name(rawValue: VtnDownloadUtilityV2.DownloadCompletedNotif as String), object: docDirectoryPath)
     }
     
-    func downloadRequestDidFailedWithError(_ error: NSError, downloadModel: VtnDownloadModel, index: Int) {
+    func downloadRequestDidFailedWithError(_ error: NSError, downloadModel: VtnDownloadModelV2, index: Int) {
         self.safelyDismissAlertController()
         self.refreshCellForIndex(downloadModel, index: index)
         
@@ -226,12 +226,12 @@ extension VtnDownloadingVC: VtnDownloadManagerDelegate {
     
     //Oppotunity to handle destination does not exists error
     //This delegate will be called on the session queue so handle it appropriately
-    func downloadRequestDestinationDoestNotExists(_ downloadModel: VtnDownloadModel, index: Int, location: URL) {
-        let myDownloadPath = VtnUtility.baseFilePath + "/Videos"
+    func downloadRequestDestinationDoestNotExists(_ downloadModel: VtnDownloadModelV2, index: Int, location: URL) {
+        let myDownloadPath = VtnDownloadUtilityV2.baseFilePath + "/Videos"
         if !FileManager.default.fileExists(atPath: myDownloadPath) {
             try! FileManager.default.createDirectory(atPath: myDownloadPath, withIntermediateDirectories: true, attributes: nil)
         }
-        let fileName = VtnUtility.getUniqueFileNameWithPath((myDownloadPath as NSString).appendingPathComponent(downloadModel.fileName as String) as NSString)
+        let fileName = VtnDownloadUtilityV2.getUniqueFileNameWithPath((myDownloadPath as NSString).appendingPathComponent(downloadModel.fileName as String) as NSString)
         let path =  myDownloadPath + "/" + (fileName as String)
         try! FileManager.default.moveItem(at: location, to: URL(fileURLWithPath: path))
         debugPrint("Videos folder path: \(myDownloadPath)")

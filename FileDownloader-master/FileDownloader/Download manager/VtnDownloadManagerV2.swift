@@ -8,7 +8,7 @@
 
 import UIKit
 
-@objc public protocol VtnDownloadManagerDelegate: class {
+@objc public protocol VtnDownloadManagerDelegateV2: class {
     /**A delegate method called each time whenever any download task's progress is updated
      */
     @objc func downloadRequestDidUpdateProgress(_ downloadModel: VtnDownloadModel, index: Int)
@@ -42,7 +42,7 @@ import UIKit
     
 }
 
-open class VtnDownloadManager: NSObject {
+open class VtnDownloadManagerV2: NSObject {
 
     fileprivate var sessionManager: URLSession!
     
@@ -52,11 +52,11 @@ open class VtnDownloadManager: NSObject {
     fileprivate let TaskDescFileURLIndex = 1
     fileprivate let TaskDescFileDestinationIndex = 2
     
-    fileprivate weak var delegate: VtnDownloadManagerDelegate?
+    fileprivate weak var delegate: VtnDownloadManagerDelegateV2?
     
     open var downloadingArray: [VtnDownloadModel] = []
     
-    public convenience init(session sessionIdentifer: String, delegate: VtnDownloadManagerDelegate, sessionConfiguration: URLSessionConfiguration? = nil, completion: (() -> Void)? = nil) {
+    public convenience init(session sessionIdentifer: String, delegate: VtnDownloadManagerDelegateV2, sessionConfiguration: URLSessionConfiguration? = nil, completion: (() -> Void)? = nil) {
         self.init()
         self.delegate = delegate
         self.sessionManager = backgroundSession(identifier: sessionIdentifer, configuration: sessionConfiguration)
@@ -69,7 +69,7 @@ open class VtnDownloadManager: NSObject {
     }
     
     fileprivate func backgroundSession(identifier: String, configuration: URLSessionConfiguration? = nil) -> URLSession {
-        let sessionConfiguration = configuration ?? VtnDownloadManager.defaultSessionConfiguration(identifier: identifier)
+        let sessionConfiguration = configuration ?? VtnDownloadManagerV2.defaultSessionConfiguration(identifier: identifier)
         assert(identifier == sessionConfiguration.identifier, "Configuration identifiers do not match")
         let session = Foundation.URLSession(configuration: sessionConfiguration, delegate: self, delegateQueue: nil)
         return session
@@ -78,7 +78,7 @@ open class VtnDownloadManager: NSObject {
 
 // MARK: Private Helper functions
 
-extension VtnDownloadManager {
+extension VtnDownloadManagerV2 {
     
     fileprivate func downloadTasks() -> [URLSessionDownloadTask] {
         var tasks: [URLSessionDownloadTask] = []
@@ -131,7 +131,7 @@ extension VtnDownloadManager {
     }
 }
 
-extension VtnDownloadManager: URLSessionDownloadDelegate {
+extension VtnDownloadManagerV2: URLSessionDownloadDelegate {
     
     public func urlSession(_ session: URLSession, downloadTask: URLSessionDownloadTask, didWriteData bytesWritten: Int64, totalBytesWritten: Int64, totalBytesExpectedToWrite: Int64) {
         for (index, downloadModel) in self.downloadingArray.enumerated() {
@@ -313,7 +313,7 @@ extension VtnDownloadManager: URLSessionDownloadDelegate {
 
 //MARK: Public Helper Functions
 
-extension VtnDownloadManager {
+extension VtnDownloadManagerV2 {
     
     @objc public func addDownloadTask(_ fileName: String, request: URLRequest, destinationPath: String) {
         

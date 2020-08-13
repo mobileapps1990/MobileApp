@@ -8,7 +8,7 @@
 
 import UIKit
 
-public enum VtnTaskStatus: Int {
+public enum VtnTaskStatusV2: Int {
     case unknown, gettingInfo, downloading, paused, failed
     
     public func description() -> String {
@@ -27,11 +27,11 @@ public enum VtnTaskStatus: Int {
     }
 }
 
-open class VtnDownloadModel: NSObject {
+open class VtnDownloadModelV2: NSObject {
 
     open var fileName: String!
     open var fileURL: String!
-    open var status: String = VtnTaskStatus.gettingInfo.description()
+    open var status: String = VtnTaskStatusV2.gettingInfo.description()
     
     open var file: (size: Float, unit: String)?
     open var downloadedFile: (size: Float, unit: String)?
