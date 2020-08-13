@@ -26,12 +26,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     //MARK: - File Download Client
     // completion property used by client
-    var backgroundURLSessionCompletionHandler: (() -> Void)?
-
-
+   // var backgroundURLSessionCompletionHandler: (() -> Void)?
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
+        UIApplication.shared.setMinimumBackgroundFetchInterval(5)
+        //UIApplicationBackgroundFetchIntervalMinimum
         return true
     }
 
@@ -41,6 +41,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     func applicationDidEnterBackground(_ application: UIApplication) {
+        
+        var bgTask = 1
+        let app = UIApplication.shared
+            bgTask = app.beginBackgroundTask(expirationHandler: {() -> Void in
+                app.endBackgroundTask(bgTask)
+        })
+        
         // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
         // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
     }
@@ -62,9 +69,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, handleEventsForBackgroundURLSession identifier: String, completionHandler: @escaping () -> Void) {
         // Background completion called here.
       //  backgroundURLSessionCompletionHandler = completionHandler
+        print("handleEventsForBackgroundURLSession: \(identifier)")
         backgroundSessionCompletionHandler = completionHandler
-
-
     }
 
 }

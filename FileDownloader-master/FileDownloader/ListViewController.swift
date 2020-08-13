@@ -8,8 +8,9 @@
 
 import UIKit
 
-let movieURL = "https://www.learningcontainer.com/wp-content/uploads/2020/05/sample-mp4-file.mp4"
-
+let movieURL = "https://v2s3z9v2.stackpathcdn.com/videos/2591/04-02-2019/utube_chicken_kurma__GLR6SCPE.mp4"
+//https://h7r9r3p9.map2.ssl.hwcdn.net/videos/3044/28-03-2019/Tolet_HD_6Track__PU7TQ986_6BNDAJ4S_r2048.mp4?&ttl=1597333660&ventoken=fb7285e808dc60014f39ea51a8af22f4
+//https://www.learningcontainer.com/wp-content/uploads/2020/05/sample-mp4-file.mp4
 
 class ListViewController: UIViewController {
     
@@ -22,7 +23,22 @@ class ListViewController: UIViewController {
         super.viewDidLoad()
         self.setUpDownloadingViewController()
         
-     
+         do {
+             let contentOfDir: [String] = try FileManager.default.contentsOfDirectory(atPath: VtnUtility.baseFilePath as String)
+             downloadedFilesArray.append(contentsOf: contentOfDir)
+             let index = downloadedFilesArray.firstIndex(of: ".DS_Store")
+             if let index = index {
+                 downloadedFilesArray.remove(at: index)
+             }
+             if downloadedFilesArray.count > 0 {
+                 self.downloadBtn.isEnabled = false
+                 self.downloadBtn.alpha = 0.5
+             }
+             print(downloadedFilesArray)
+         } catch let error as NSError {
+             print("Error while getting directory content \(error)")
+         }
+        
          NotificationCenter.default.addObserver(self, selector: #selector(downloadFinishedNotification(_:)), name: NSNotification.Name(rawValue: VtnUtility.DownloadCompletedNotif as String), object: nil)
         // Do any additional setup after loading the view.
     }
@@ -44,7 +60,7 @@ class ListViewController: UIViewController {
     @IBAction func deleteDownload(_ sender: UIButton) {
         self.removeExistingFiles()
         self.downloadBtn.isEnabled = true
-        self.downloadBtn.alpha = 0.1
+        self.downloadBtn.alpha = 1
     }
     
     
@@ -68,21 +84,7 @@ class ListViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        do {
-            let contentOfDir: [String] = try FileManager.default.contentsOfDirectory(atPath: VtnUtility.baseFilePath as String)
-            downloadedFilesArray.append(contentsOf: contentOfDir)
-            let index = downloadedFilesArray.firstIndex(of: ".DS_Store")
-            if let index = index {
-                downloadedFilesArray.remove(at: index)
-            }
-            if downloadedFilesArray.count > 0 {
-                self.downloadBtn.isEnabled = false
-                self.downloadBtn.alpha = 0.5
-            }
-            print(downloadedFilesArray)
-        } catch let error as NSError {
-            print("Error while getting directory content \(error)")
-        }
+        
         
     }
     
