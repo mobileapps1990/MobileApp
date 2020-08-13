@@ -109,7 +109,6 @@ extension VtnDownloadManagerV2 {
             
             let downloadModel = VtnDownloadModelV2.init(fileName: fileName, fileURL: fileURL, destinationPath: destinationPath, userID:"",videoID:"")
             downloadModel.task = downloadTask
-            //  downloadModel.startTime = Date()
             
             if downloadTask.state == .running {
                 downloadModel.status = VtnTaskStatusV2.downloading.description()
@@ -143,39 +142,10 @@ extension VtnDownloadManagerV2: URLSessionDownloadDelegate {
                     let receivedBytesCount = Double(downloadTask.countOfBytesReceived)
                     let totalBytesCount = Double(downloadTask.countOfBytesExpectedToReceive)
                     let progress = Float(receivedBytesCount / totalBytesCount)
-                    
-//                    let taskStartedDate = downloadModel.startTime ?? Date()
-//                    let timeInterval = taskStartedDate.timeIntervalSinceNow
-//                    let downloadTime = TimeInterval(-1 * timeInterval)
-//
-//                    let speed = Float(totalBytesWritten) / Float(downloadTime)
-//
-//                    let remainingContentLength = totalBytesExpectedToWrite - totalBytesWritten
-//
-//                    let remainingTime = remainingContentLength / Int64(speed)
-//                    let hours = Int(remainingTime) / 3600
-//                    let minutes = (Int(remainingTime) - hours * 3600) / 60
-//                    let seconds = Int(remainingTime) - hours * 3600 - minutes * 60
-//
-//                    let totalFileSize = VtnDownloadUtilityV2.calculateFileSizeInUnit(totalBytesExpectedToWrite)
-//                    let totalFileSizeUnit = VtnDownloadUtilityV2.calculateUnit(totalBytesExpectedToWrite)
-//
-//                    let downloadedFileSize = VtnDownloadUtilityV2.calculateFileSizeInUnit(totalBytesWritten)
-//                    let downloadedSizeUnit = VtnDownloadUtilityV2.calculateUnit(totalBytesWritten)
-//
-//                    let speedSize = VtnDownloadUtilityV2.calculateFileSizeInUnit(Int64(speed))
-//                    let speedUnit = VtnDownloadUtilityV2.calculateUnit(Int64(speed))
-                    
-//                    downloadModel.remainingTime = (hours, minutes, seconds)
-//                    downloadModel.file = (totalFileSize, totalFileSizeUnit as String)
-//                    downloadModel.downloadedFile = (downloadedFileSize, downloadedSizeUnit as String)
-//                    downloadModel.speed = (speedSize, speedUnit as String)
                     downloadModel.progress = progress
-                    
                     if self.downloadingArray.contains(downloadModel), let objectIndex = self.downloadingArray.firstIndex(of: downloadModel) {
                         self.downloadingArray[objectIndex] = downloadModel
                     }
-                    
                     self.delegate?.downloadRequestDidUpdateProgress(downloadModel, index: index)
                 })
                 break
@@ -206,11 +176,6 @@ extension VtnDownloadManagerV2: URLSessionDownloadDelegate {
                         })
                     }
                 } else {
-                    //Opportunity to handle the folder doesnot exists error appropriately.
-                    //Move downloaded file to destination
-                    //Delegate will be called on the session queue
-                    //Otherwise blindly give error Destination folder does not exists
-                    
                     if let _ = self.delegate?.downloadRequestDestinationDoestNotExists {
                         self.delegate?.downloadRequestDestinationDoestNotExists?(downloadModel, index: index, location: location)
                     } else {
@@ -408,7 +373,6 @@ extension VtnDownloadManagerV2 {
     }
     
     @objc public func presentNotificationForDownload(_ notifAction: String, notifBody: String) {
-        
- 
+        // Successfully download trigger action
     }
 }
