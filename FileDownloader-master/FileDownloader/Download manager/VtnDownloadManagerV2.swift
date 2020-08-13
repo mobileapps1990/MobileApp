@@ -11,34 +11,34 @@ import UIKit
 @objc public protocol VtnDownloadManagerDelegateV2: class {
     /**A delegate method called each time whenever any download task's progress is updated
      */
-    @objc func downloadRequestDidUpdateProgress(_ downloadModel: VtnDownloadModel, index: Int)
+    @objc func downloadRequestDidUpdateProgress(_ downloadModel: VtnDownloadModelV2, index: Int)
     /**A delegate method called when interrupted tasks are repopulated
      */
-    @objc func downloadRequestDidPopulatedInterruptedTasks(_ downloadModel: [VtnDownloadModel])
+    @objc func downloadRequestDidPopulatedInterruptedTasks(_ downloadModel: [VtnDownloadModelV2])
     /**A delegate method called each time whenever new download task is start downloading
      */
-    @objc optional func downloadRequestStarted(_ downloadModel: VtnDownloadModel, index: Int)
+    @objc optional func downloadRequestStarted(_ downloadModel: VtnDownloadModelV2, index: Int)
     /**A delegate method called each time whenever running download task is paused. If task is already paused the action will be ignored
      */
-    @objc optional func downloadRequestDidPaused(_ downloadModel: VtnDownloadModel, index: Int)
+    @objc optional func downloadRequestDidPaused(_ downloadModel: VtnDownloadModelV2, index: Int)
     /**A delegate method called each time whenever any download task is resumed. If task is already downloading the action will be ignored
      */
-    @objc optional func downloadRequestDidResumed(_ downloadModel: VtnDownloadModel, index: Int)
+    @objc optional func downloadRequestDidResumed(_ downloadModel: VtnDownloadModelV2, index: Int)
     /**A delegate method called each time whenever any download task is resumed. If task is already downloading the action will be ignored
      */
-    @objc optional func downloadRequestDidRetry(_ downloadModel: VtnDownloadModel, index: Int)
+    @objc optional func downloadRequestDidRetry(_ downloadModel: VtnDownloadModelV2, index: Int)
     /**A delegate method called each time whenever any download task is cancelled by the user
      */
-    @objc optional func downloadRequestCanceled(_ downloadModel: VtnDownloadModel, index: Int)
+    @objc optional func downloadRequestCanceled(_ downloadModel: VtnDownloadModelV2, index: Int)
     /**A delegate method called each time whenever any download task is finished successfully
      */
-    @objc optional func downloadRequestFinished(_ downloadModel: VtnDownloadModel, index: Int)
+    @objc optional func downloadRequestFinished(_ downloadModel: VtnDownloadModelV2, index: Int)
     /**A delegate method called each time whenever any download task is failed due to any reason
      */
-    @objc optional func downloadRequestDidFailedWithError(_ error: NSError, downloadModel: VtnDownloadModel, index: Int)
+    @objc optional func downloadRequestDidFailedWithError(_ error: NSError, downloadModel: VtnDownloadModelV2, index: Int)
     /**A delegate method called each time whenever specified destination does not exists. It will be called on the session queue. It provides the opportunity to handle error appropriately
      */
-    @objc optional func downloadRequestDestinationDoestNotExists(_ downloadModel: VtnDownloadModel, index: Int, location: URL)
+    @objc optional func downloadRequestDestinationDoestNotExists(_ downloadModel: VtnDownloadModelV2, index: Int, location: URL)
     
 }
 
@@ -54,7 +54,7 @@ open class VtnDownloadManagerV2: NSObject {
     
     fileprivate weak var delegate: VtnDownloadManagerDelegateV2?
     
-    open var downloadingArray: [VtnDownloadModel] = []
+    open var downloadingArray: [VtnDownloadModelV2] = []
     
     public convenience init(session sessionIdentifer: String, delegate: VtnDownloadManagerDelegateV2, sessionConfiguration: URLSessionConfiguration? = nil, completion: (() -> Void)? = nil) {
         self.init()
@@ -105,18 +105,18 @@ extension VtnDownloadManagerV2 {
             let fileURL = taskDescComponents[TaskDescFileURLIndex]
             let destinationPath = taskDescComponents[TaskDescFileDestinationIndex]
             
-            let downloadModel = VtnDownloadModel.init(fileName: fileName, fileURL: fileURL, destinationPath: destinationPath)
+            let downloadModel = VtnDownloadModelV2.init(fileName: fileName, fileURL: fileURL, destinationPath: destinationPath)
             downloadModel.task = downloadTask
             downloadModel.startTime = Date()
             
             if downloadTask.state == .running {
-                downloadModel.status = VtnTaskStatus.downloading.description()
+                downloadModel.status = VtnTaskStatusV2.downloading.description()
                 downloadingArray.append(downloadModel)
             } else if(downloadTask.state == .suspended) {
-                downloadModel.status = VtnTaskStatus.paused.description()
+                downloadModel.status = VtnTaskStatusV2.paused.description()
                 downloadingArray.append(downloadModel)
             } else {
-                downloadModel.status = VtnTaskStatus.failed.description()
+                downloadModel.status = VtnTaskStatusV2.failed.description()
             }
         }
     }
@@ -155,14 +155,14 @@ extension VtnDownloadManagerV2: URLSessionDownloadDelegate {
                     let minutes = (Int(remainingTime) - hours * 3600) / 60
                     let seconds = Int(remainingTime) - hours * 3600 - minutes * 60
                     
-                    let totalFileSize = VtnUtility.calculateFileSizeInUnit(totalBytesExpectedToWrite)
-                    let totalFileSizeUnit = VtnUtility.calculateUnit(totalBytesExpectedToWrite)
+                    let totalFileSize = VtnDownloadUtilityV2.calculateFileSizeInUnit(totalBytesExpectedToWrite)
+                    let totalFileSizeUnit = VtnDownloadUtilityV2.calculateUnit(totalBytesExpectedToWrite)
                     
-                    let downloadedFileSize = VtnUtility.calculateFileSizeInUnit(totalBytesWritten)
-                    let downloadedSizeUnit = VtnUtility.calculateUnit(totalBytesWritten)
+                    let downloadedFileSize = VtnDownloadUtilityV2.calculateFileSizeInUnit(totalBytesWritten)
+                    let downloadedSizeUnit = VtnDownloadUtilityV2.calculateUnit(totalBytesWritten)
                     
-                    let speedSize = VtnUtility.calculateFileSizeInUnit(Int64(speed))
-                    let speedUnit = VtnUtility.calculateUnit(Int64(speed))
+                    let speedSize = VtnDownloadUtilityV2.calculateFileSizeInUnit(Int64(speed))
+                    let speedUnit = VtnDownloadUtilityV2.calculateUnit(Int64(speed))
                     
                     downloadModel.remainingTime = (hours, minutes, seconds)
                     downloadModel.file = (totalFileSize, totalFileSizeUnit as String)
@@ -185,7 +185,7 @@ extension VtnDownloadManagerV2: URLSessionDownloadDelegate {
         for (index, downloadModel) in downloadingArray.enumerated() {
             if downloadTask.isEqual(downloadModel.task) {
                 let fileName = downloadModel.fileName as NSString
-                let basePath = downloadModel.destinationPath == "" ? VtnUtility.baseFilePath : downloadModel.destinationPath
+                let basePath = downloadModel.destinationPath == "" ? VtnDownloadUtilityV2.baseFilePath : downloadModel.destinationPath
                 let destinationPath = (basePath as NSString).appendingPathComponent(fileName as String)
                 
                 let fileManager : FileManager = FileManager.default
@@ -238,8 +238,8 @@ extension VtnDownloadManagerV2: URLSessionDownloadDelegate {
                 let fileURL = taskDescComponents[self.TaskDescFileURLIndex]
                 let destinationPath = taskDescComponents[self.TaskDescFileDestinationIndex]
                 
-                let downloadModel = VtnDownloadModel.init(fileName: fileName, fileURL: fileURL, destinationPath: destinationPath)
-                downloadModel.status = VtnTaskStatus.failed.description()
+                let downloadModel = VtnDownloadModelV2.init(fileName: fileName, fileURL: fileURL, destinationPath: destinationPath)
+                downloadModel.status = VtnTaskStatusV2.failed.description()
                 downloadModel.task = downloadTask
                 
                 let resumeData = err?.userInfo[NSURLSessionDownloadTaskResumeData] as? Data
@@ -281,7 +281,7 @@ extension VtnDownloadManagerV2: URLSessionDownloadDelegate {
                             }
                             
                             newTask.taskDescription = task.taskDescription
-                            downloadModel.status = VtnTaskStatus.failed.description()
+                            downloadModel.status = VtnTaskStatusV2.failed.description()
                             downloadModel.task = newTask as? URLSessionDownloadTask
                             
                             self.downloadingArray[index] = downloadModel
@@ -326,9 +326,9 @@ extension VtnDownloadManagerV2 {
         
         debugPrint("session manager:\(String(describing: sessionManager)) url:\(String(describing: url)) request:\(String(describing: request))")
         
-        let downloadModel = VtnDownloadModel.init(fileName: fileName, fileURL: fileURL, destinationPath: destinationPath)
+        let downloadModel = VtnDownloadModelV2.init(fileName: fileName, fileURL: fileURL, destinationPath: destinationPath)
         downloadModel.startTime = Date()
-        downloadModel.status = VtnTaskStatus.downloading.description()
+        downloadModel.status = VtnTaskStatusV2.downloading.description()
         downloadModel.task = downloadTask
         
         downloadingArray.append(downloadModel)
@@ -355,13 +355,13 @@ extension VtnDownloadManagerV2 {
         
         let downloadModel = downloadingArray[index]
         
-        guard downloadModel.status != VtnTaskStatus.paused.description() else {
+        guard downloadModel.status != VtnTaskStatusV2.paused.description() else {
             return
         }
         
         let downloadTask = downloadModel.task
         downloadTask!.suspend()
-        downloadModel.status = VtnTaskStatus.paused.description()
+        downloadModel.status = VtnTaskStatusV2.paused.description()
         downloadModel.startTime = Date()
         
         downloadingArray[index] = downloadModel
@@ -373,13 +373,13 @@ extension VtnDownloadManagerV2 {
         
         let downloadModel = downloadingArray[index]
         
-        guard downloadModel.status != VtnTaskStatus.downloading.description() else {
+        guard downloadModel.status != VtnTaskStatusV2.downloading.description() else {
             return
         }
         
         let downloadTask = downloadModel.task
         downloadTask!.resume()
-        downloadModel.status = VtnTaskStatus.downloading.description()
+        downloadModel.status = VtnTaskStatusV2.downloading.description()
         
         downloadingArray[index] = downloadModel
         
@@ -389,14 +389,14 @@ extension VtnDownloadManagerV2 {
     @objc public func retryDownloadTaskAtIndex(_ index: Int) {
         let downloadModel = downloadingArray[index]
         
-        guard downloadModel.status != VtnTaskStatus.downloading.description() else {
+        guard downloadModel.status != VtnTaskStatusV2.downloading.description() else {
             return
         }
         
         let downloadTask = downloadModel.task
         
         downloadTask!.resume()
-        downloadModel.status = VtnTaskStatus.downloading.description()
+        downloadModel.status = VtnTaskStatusV2.downloading.description()
         downloadModel.startTime = Date()
         downloadModel.task = downloadTask
         
