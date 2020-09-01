@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="16097" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="TA0-Cd-N7h">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="16097.2" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="TA0-Cd-N7h">
     <device id="retina5_5" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
@@ -82,6 +82,58 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="GbD-wO-m1E" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1473.913043478261" y="95.380434782608702"/>
+        </scene>
+        <!--Crop View Controller-->
+        <scene sceneID="dcW-3J-FTF">
+            <objects>
+                <viewController storyboardIdentifier="CropViewController" id="5yO-lj-EiM" customClass="CropViewController" customModule="FileDownloader" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="gRN-vi-pqe">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="vttimage" translatesAutoresizingMaskIntoConstraints="NO" id="e3g-t7-yh5">
+                                <rect key="frame" x="20" y="70" width="240" height="148"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="148" id="Fkg-zz-Yir"/>
+                                </constraints>
+                            </imageView>
+                            <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" minValue="0.0" maxValue="0.0" translatesAutoresizingMaskIntoConstraints="NO" id="sty-Tq-LjC">
+                                <rect key="frame" x="18" y="257" width="378" height="31"/>
+                                <connections>
+                                    <action selector="sliderValueChangedWithSender:" destination="5yO-lj-EiM" eventType="valueChanged" id="gCQ-ck-HHk"/>
+                                </connections>
+                            </slider>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="hP6-bS-cnW">
+                                <rect key="frame" x="294" y="107.66666666666669" width="100" height="73"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="100" id="Oco-7S-Pv9"/>
+                                    <constraint firstAttribute="height" constant="73" id="gRv-cI-5EG"/>
+                                </constraints>
+                            </imageView>
+                        </subviews>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <constraints>
+                            <constraint firstItem="sty-Tq-LjC" firstAttribute="leading" secondItem="cK5-DN-aPC" secondAttribute="leading" constant="20" id="0ap-ms-TD3"/>
+                            <constraint firstItem="cK5-DN-aPC" firstAttribute="trailing" secondItem="sty-Tq-LjC" secondAttribute="trailing" constant="20" id="53z-Zx-V5n"/>
+                            <constraint firstItem="sty-Tq-LjC" firstAttribute="top" secondItem="e3g-t7-yh5" secondAttribute="bottom" constant="39" id="6AD-En-G4d"/>
+                            <constraint firstItem="hP6-bS-cnW" firstAttribute="centerY" secondItem="e3g-t7-yh5" secondAttribute="centerY" id="74b-DR-p27"/>
+                            <constraint firstItem="e3g-t7-yh5" firstAttribute="leading" secondItem="cK5-DN-aPC" secondAttribute="leading" constant="20" id="aa5-4j-eLm"/>
+                            <constraint firstItem="hP6-bS-cnW" firstAttribute="trailing" secondItem="sty-Tq-LjC" secondAttribute="trailing" id="lKb-sQ-aWV"/>
+                            <constraint firstItem="cK5-DN-aPC" firstAttribute="trailing" secondItem="e3g-t7-yh5" secondAttribute="trailing" constant="154" id="pls-5g-y0o"/>
+                            <constraint firstItem="e3g-t7-yh5" firstAttribute="top" secondItem="cK5-DN-aPC" secondAttribute="top" constant="26" id="tKn-fX-zXy"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="cK5-DN-aPC"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="95d-Su-YtN"/>
+                    <connections>
+                        <outlet property="cropImaged" destination="hP6-bS-cnW" id="Gcw-NK-n5E"/>
+                        <outlet property="slider" destination="sty-Tq-LjC" id="3vt-q7-RBw"/>
+                        <outlet property="staticImage" destination="e3g-t7-yh5" id="Jac-je-XcA"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="EwT-7n-keC" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3942.0289855072465" y="470.38043478260875"/>
         </scene>
         <!--List-->
         <scene sceneID="5ML-5M-xXv">
@@ -193,8 +245,8 @@ Downloaded: Calculating...</string>
                                     </tableViewCell>
                                 </prototypes>
                                 <connections>
-                                    <outlet property="dataSource" destination="vs4-ce-sWl" id="2h9-FW-1Ij"/>
-                                    <outlet property="delegate" destination="vs4-ce-sWl" id="cuT-Dy-Wvx"/>
+                                    <outlet property="dataSource" destination="vs4-ce-sWl" id="rTQ-6g-Tyq"/>
+                                    <outlet property="delegate" destination="vs4-ce-sWl" id="yea-Kg-5Wv"/>
                                 </connections>
                             </tableView>
                         </subviews>
@@ -230,6 +282,7 @@ Downloaded: Calculating...</string>
                     <connections>
                         <segue destination="o0U-AM-vfy" kind="relationship" relationship="viewControllers" id="ucu-1Q-oAG"/>
                         <segue destination="vkO-2B-jwz" kind="relationship" relationship="viewControllers" id="VMd-AQ-ZBl"/>
+                        <segue destination="9as-dz-ZgL" kind="relationship" relationship="viewControllers" id="2If-gb-fY0"/>
                     </connections>
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="4ZJ-i0-IPi" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -256,11 +309,32 @@ Downloaded: Calculating...</string>
             </objects>
             <point key="canvasLocation" x="451" y="938"/>
         </scene>
+        <!--Crop-->
+        <scene sceneID="GdD-lt-Zwq">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="9as-dz-ZgL" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="Crop" image="square.and.pencil" catalog="system" id="zqE-J7-XJU"/>
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="g6v-Vq-Pdu">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="5yO-lj-EiM" kind="relationship" relationship="rootViewController" id="1BC-KR-1H1"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="2GT-Fi-diC" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3034.7826086956525" y="470.38043478260875"/>
+        </scene>
     </scenes>
     <resources>
         <image name="icloud.and.arrow.down" catalog="system" width="128" height="112"/>
         <image name="list.bullet.below.rectangle" catalog="system" width="128" height="112"/>
         <image name="pause.fill" catalog="system" width="116" height="128"/>
+        <image name="square.and.pencil" catalog="system" width="128" height="118"/>
         <image name="trash" catalog="system" width="121" height="128"/>
+        <image name="vttimage" width="938.5" height="538.5"/>
     </resources>
 </document>

@@ -27,15 +27,30 @@ class VtnDownloadingVC: UIViewController {
         return downloadmanager
         }()
     
+    var downObject : VtnDownloadManagerV2?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.tableView?.tableFooterView = UIView()
         // Do any additional setup after loading the view.
     }
     
+    func loadObject () -> VtnDownloadManagerV2 {
+        let sessionIdentifer: String = "com.iosDevelopment.VtnDownloadManager.BackgroundSession"
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+        let completion = appDelegate.backgroundSessionCompletionHandler
+        let downloadmanager = VtnDownloadManagerV2(session: sessionIdentifer, delegate: self, completion: completion)
+        return downloadmanager
+    }
+    
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        self.tableView?.reloadData()
+        self.downObject = downloadManager
+//        let check = downloadManager.downloadingArray
+//        print(check[0].userID)
+        
+       // self.downObject = self.loadObject()
     }
     
     func refreshCellForIndex(_ downloadModel: VtnDownloadModelV2, index: Int) {
@@ -63,7 +78,7 @@ class VtnDownloadingVC: UIViewController {
 extension VtnDownloadingVC : UITableViewDelegate ,UITableViewDataSource {
     
      func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return downloadManager.downloadingArray.count
+        return downObject?.downloadingArray.count ?? 0
     }
     
      func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -71,7 +86,7 @@ extension VtnDownloadingVC : UITableViewDelegate ,UITableViewDataSource {
         let cellIdentifier : NSString = "VtnDownloadingcell"
         let cell : VtnDownloadingcell = self.tableView?.dequeueReusableCell(withIdentifier: cellIdentifier as String, for: indexPath) as! VtnDownloadingcell
         
-        let downloadModel = downloadManager.downloadingArray[indexPath.row]
+        let downloadModel = (downObject?.downloadingArray[indexPath.row])!
         cell.updateCellForRowAtIndexPath(indexPath, downloadModel: downloadModel)
         
         return cell
@@ -80,8 +95,8 @@ extension VtnDownloadingVC : UITableViewDelegate ,UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
          selectedIndexPath = indexPath
-         let downloadModel = downloadManager.downloadingArray[indexPath.row]
-         self.showAppropriateActionController(downloadModel.status)
+         let downloadModel = downObject?.downloadingArray[indexPath.row]
+        self.showAppropriateActionController(downloadModel!.status)
          tableView.deselectRow(at: indexPath, animated: true)
      }
 }

@@ -12,21 +12,23 @@ let movieURL = "https://v2s3z9v2.stackpathcdn.com/videos/2591/04-02-2019/utube_c
 let movieURL1 = "https://v2s3z9v2.stackpathcdn.com/videos/2591/21-08-2018/utube_nalli_nihari__7IN3TW4K.mp4"
 
 
+
 class ListViewController: UIViewController {
     
     var mDownloadingViewObj  : VtnDownloadingVC?
-    let myDownloadPath = VtnDownloadUtilityV2.baseFilePath + "/My Downloads"
+    let myDownloadPath = VtnDownloadUtilityV2.baseFilePath
     @IBOutlet weak var downloadBtn: UIButton!
     var downloadedFilesArray : [String] = []
     var userID : String = "5577"
     var videoID1 : String = "173"
     var videoID2 : String = "327"
-
+    var exampleImage : UIImage?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         self.setUpDownloadingViewController()
         
+       
          do {
              let contentOfDir: [String] = try FileManager.default.contentsOfDirectory(atPath: VtnDownloadUtilityV2.baseFilePath as String)
              downloadedFilesArray.append(contentsOf: contentOfDir)
@@ -46,6 +48,9 @@ class ListViewController: UIViewController {
          NotificationCenter.default.addObserver(self, selector: #selector(downloadFinishedNotification(_:)), name: NSNotification.Name(rawValue: VtnDownloadUtilityV2.DownloadCompletedNotif as String), object: nil)
         // Do any additional setup after loading the view.
     }
+    
+   
+
     
     func removeExistingFiles() {
         let fileManager = FileManager.default
@@ -119,3 +124,4 @@ class ListViewController: UIViewController {
      */
     
 }
+

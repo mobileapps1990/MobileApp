@@ -39,7 +39,7 @@ open class VtnDownloadModelV2: NSObject {
     
     fileprivate(set) open var destinationPath: String = ""
     
-    fileprivate convenience init(fileName: String, fileURL: String,userID:String,videoID:String) {
+    fileprivate convenience init(fileName: String, fileURL: String, userID:String, videoID:String) {
         self.init()
         
         self.fileName = fileName
@@ -48,8 +48,8 @@ open class VtnDownloadModelV2: NSObject {
         self.videoID = videoID
     }
     
-    convenience init(fileName: String, fileURL: String, destinationPath: String,userID:String,videoID :String) {
-        self.init(fileName: fileName, fileURL: fileURL,userID:userID,videoID:videoID)
+    convenience init(fileName: String, fileURL: String, destinationPath: String, userID:String, videoID :String) {
+        self.init(fileName: fileName, fileURL: fileURL, userID: userID, videoID: videoID)
         self.destinationPath = destinationPath
     }
     

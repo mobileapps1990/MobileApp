@@ -51,7 +51,9 @@ open class VtnDownloadManagerV2: NSObject {
     fileprivate let TaskDescFileNameIndex = 0
     fileprivate let TaskDescFileURLIndex = 1
     fileprivate let TaskDescFileDestinationIndex = 2
-    
+    fileprivate let TaskDescFileUserIDIndex = 3
+    fileprivate let TaskDescFileVideoIDIndex = 4
+
     fileprivate weak var delegate: VtnDownloadManagerDelegateV2?
     
     open var downloadingArray: [VtnDownloadModelV2] = []
@@ -106,8 +108,10 @@ extension VtnDownloadManagerV2 {
             let fileName = taskDescComponents[TaskDescFileNameIndex]
             let fileURL = taskDescComponents[TaskDescFileURLIndex]
             let destinationPath = taskDescComponents[TaskDescFileDestinationIndex]
+            let userID = taskDescComponents[self.TaskDescFileUserIDIndex]
+            let videoID = taskDescComponents[self.TaskDescFileVideoIDIndex]
             
-            let downloadModel = VtnDownloadModelV2.init(fileName: fileName, fileURL: fileURL, destinationPath: destinationPath, userID:"",videoID:"")
+            let downloadModel = VtnDownloadModelV2.init(fileName: fileName, fileURL: fileURL, destinationPath: destinationPath, userID:userID,videoID:videoID)
             downloadModel.task = downloadTask
             
             if downloadTask.state == .running {
@@ -204,8 +208,10 @@ extension VtnDownloadManagerV2: URLSessionDownloadDelegate {
                 let fileName = taskDescComponents[self.TaskDescFileNameIndex]
                 let fileURL = taskDescComponents[self.TaskDescFileURLIndex]
                 let destinationPath = taskDescComponents[self.TaskDescFileDestinationIndex]
-                
-                let downloadModel = VtnDownloadModelV2.init(fileName: fileName, fileURL: fileURL, destinationPath: destinationPath,userID:"",videoID:"")
+                let userID = taskDescComponents[self.TaskDescFileUserIDIndex]
+                let videoID = taskDescComponents[self.TaskDescFileVideoIDIndex]
+
+                let downloadModel = VtnDownloadModelV2.init(fileName: fileName, fileURL: fileURL, destinationPath: destinationPath,userID:userID,videoID:videoID)
                 downloadModel.status = VtnTaskStatusV2.failed.description()
                 downloadModel.task = downloadTask
                 
@@ -288,15 +294,14 @@ extension VtnDownloadManagerV2 {
         let fileURL = url.absoluteString
         
         let downloadTask = sessionManager.downloadTask(with: request)
-        downloadTask.taskDescription = [fileName, fileURL, destinationPath].joined(separator: ",")
+        downloadTask.taskDescription = [fileName, fileURL, destinationPath,userID,videoID].joined(separator: ",")
         downloadTask.resume()
-        
         debugPrint("session manager:\(String(describing: sessionManager)) url:\(String(describing: url)) request:\(String(describing: request))")
-        
         let downloadModel = VtnDownloadModelV2.init(fileName: fileName, fileURL: fileURL, destinationPath: destinationPath,userID: userID,videoID:videoID)
         downloadModel.status = VtnTaskStatusV2.downloading.description()
         downloadModel.task = downloadTask
-        
+        downloadModel.userID = userID
+        downloadModel.videoID = videoID
         downloadingArray.append(downloadModel)
         delegate?.downloadRequestStarted?(downloadModel, index: downloadingArray.count - 1)
     }
@@ -309,13 +314,13 @@ extension VtnDownloadManagerV2 {
         
     }
     
-    @objc public func addDownloadTask(_ fileName: String, fileURL: String,userID:String,videoID:String) {
-        addDownloadTask(fileName, fileURL: fileURL, destinationPath: "",userID: userID,videoID: videoID)
-    }
-    
-    @objc public func addDownloadTask(_ fileName: String, request: URLRequest,userID:String,videoID:String) {
-        addDownloadTask(fileName, request: request, destinationPath: "",userID: userID,videoID: videoID)
-    }
+//    @objc public func addDownloadTask(_ fileName: String, fileURL: String,userID:String,videoID:String) {
+//        addDownloadTask(fileName, fileURL: fileURL, destinationPath: "",userID: userID,videoID: videoID)
+//    }
+//
+//    @objc public func addDownloadTask(_ fileName: String, request: URLRequest,userID:String,videoID:String) {
+//        addDownloadTask(fileName, request: request, destinationPath: "",userID: userID,videoID: videoID)
+//    }
     
     @objc public func pauseDownloadTaskAtIndex(_ index: Int) {
         

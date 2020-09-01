@@ -30,9 +30,8 @@ class VtnDownloadingcell: UITableViewCell {
         
         self.lblTitle?.text = "File Title: \(downloadModel.fileName!)"
         self.progressDownload?.progress = downloadModel.progress
-                
         let detailLabelText = NSMutableString()
-        detailLabelText.appendFormat("Status: \(downloadModel.status)\n Progress:\( Int(downloadModel.progress * 100.0))\n VideoID\(downloadModel.videoID ?? "")" as NSString)
+        detailLabelText.appendFormat("Status: \(downloadModel.status)\n Progress:\( Int(downloadModel.progress * 100.0))\n VideoID: \(downloadModel.videoID ?? "")" as NSString)
         lblDetails?.text = detailLabelText as String
     }
 

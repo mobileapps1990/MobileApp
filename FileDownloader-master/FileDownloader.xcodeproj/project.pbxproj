@@ -14,6 +14,8 @@
 		1C1F51A0201F98090077BED5 /* FileDownloaderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C1F519F201F98090077BED5 /* FileDownloaderTests.swift */; };
 		1C1F51AB201F98090077BED5 /* FileDownloaderUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C1F51AA201F98090077BED5 /* FileDownloaderUITests.swift */; };
 		1C7CE2EF202239DA00F21552 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C1F518A201F98090077BED5 /* AppDelegate.swift */; };
+		7E11DBD924FE34AF008D55A5 /* CropViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E11DBD824FE34AF008D55A5 /* CropViewController.swift */; };
+		7E11DBDB24FE35AF008D55A5 /* timeshow.vtt in Resources */ = {isa = PBXBuildFile; fileRef = 7E11DBDA24FE35AF008D55A5 /* timeshow.vtt */; };
 		7E68D11024E555EB00446095 /* VtnDownloadManagerV2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E68D10F24E555EB00446095 /* VtnDownloadManagerV2.swift */; };
 		7E68D11224E5561B00446095 /* VtnDownloadModelV2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E68D11124E5561B00446095 /* VtnDownloadModelV2.swift */; };
 		7E68D11424E5565C00446095 /* VtnDownloadUtilityV2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E68D11324E5565C00446095 /* VtnDownloadUtilityV2.swift */; };
@@ -53,6 +55,8 @@
 		1C1F51AA201F98090077BED5 /* FileDownloaderUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileDownloaderUITests.swift; sourceTree = "<group>"; };
 		1C1F51AC201F98090077BED5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		1C6FC92720238DB000E731C3 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		7E11DBD824FE34AF008D55A5 /* CropViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CropViewController.swift; sourceTree = "<group>"; };
+		7E11DBDA24FE35AF008D55A5 /* timeshow.vtt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = timeshow.vtt; sourceTree = "<group>"; };
 		7E68D10F24E555EB00446095 /* VtnDownloadManagerV2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VtnDownloadManagerV2.swift; sourceTree = "<group>"; };
 		7E68D11124E5561B00446095 /* VtnDownloadModelV2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VtnDownloadModelV2.swift; sourceTree = "<group>"; };
 		7E68D11324E5565C00446095 /* VtnDownloadUtilityV2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VtnDownloadUtilityV2.swift; sourceTree = "<group>"; };
@@ -111,12 +115,14 @@
 			isa = PBXGroup;
 			children = (
 				1C1F518A201F98090077BED5 /* AppDelegate.swift */,
+				7E11DBD824FE34AF008D55A5 /* CropViewController.swift */,
 				7E68D11524E55B9A00446095 /* ListViewController.swift */,
 				7E68D11724E55BAA00446095 /* VtnDownloadingVC.swift */,
 				7E68D11924E55D9000446095 /* VtnDownloadingcell.swift */,
 				7E68D10E24E555BD00446095 /* Download manager */,
 				1C1F518E201F98090077BED5 /* Main.storyboard */,
 				1C1F5191201F98090077BED5 /* Assets.xcassets */,
+				7E11DBDA24FE35AF008D55A5 /* timeshow.vtt */,
 				1C1F5193201F98090077BED5 /* LaunchScreen.storyboard */,
 				1C1F5196201F98090077BED5 /* Info.plist */,
 			);
@@ -258,6 +264,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7E11DBDB24FE35AF008D55A5 /* timeshow.vtt in Resources */,
 				1C1F5195201F98090077BED5 /* LaunchScreen.storyboard in Resources */,
 				1C1F5192201F98090077BED5 /* Assets.xcassets in Resources */,
 				1C1F5190201F98090077BED5 /* Main.storyboard in Resources */,
@@ -291,6 +298,7 @@
 				7E68D11024E555EB00446095 /* VtnDownloadManagerV2.swift in Sources */,
 				7E68D11424E5565C00446095 /* VtnDownloadUtilityV2.swift in Sources */,
 				1C1F518B201F98090077BED5 /* AppDelegate.swift in Sources */,
+				7E11DBD924FE34AF008D55A5 /* CropViewController.swift in Sources */,
 				7E68D11624E55B9A00446095 /* ListViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
